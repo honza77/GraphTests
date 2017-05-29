@@ -3,10 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GraphXSampleWpfApp"
+        xmlns:graphx="http://schemas.panthernet.ru/graphx/"
+        xmlns:models="clr-namespace:GraphXSampleWpfApp.Models"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+
+    <Grid Background="#FFDADADA">
+        <graphx:ZoomControl x:Name="ZoomCtrl" Margin="0,0,149.8,-0.4" Background="White">
+            <models:GraphAreaExample x:Name="GraphArea1" Margin="0,0,0,0" />
+        </graphx:ZoomControl>
+
     </Grid>
 </Window>
