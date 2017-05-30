@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using GraphXSampleLib;
+using GraphXSampleWpfApp.Models;
 
 namespace GraphXSampleWpfApp
 {
@@ -23,6 +12,24 @@ namespace GraphXSampleWpfApp
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void FirstExample_Click(object sender, RoutedEventArgs e)
+        {
+            var graphBase = GraphSamplesFactory.FirstSimpleExample();
+
+            var graph = Convertors.Convert(graphBase);
+
+            var gxLogicCoreExample = new GxLogicCoreExample
+            {
+                Graph = Convertors.ToGraphExample(graph)
+            };
+
+            GraphArea1.LogicCore = gxLogicCoreExample;
+
+            GraphArea1.GenerateGraph();
+
+            //ZoomCtrl.ZoomToFill();
         }
     }
 }

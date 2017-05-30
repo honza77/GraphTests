@@ -2,10 +2,10 @@
 
 namespace GraphXSampleLib
 {
-    class GraphSamplesFactory
+    public class GraphSamplesFactory
     {
 
-        public BidirectionalGraph<int, IEdge<int>> FirstSimpleExample()
+        public static BidirectionalGraph<int, IEdge<int>> FirstSimpleExample()
         {
             var graph = new BidirectionalGraph<int, IEdge<int>>();
 

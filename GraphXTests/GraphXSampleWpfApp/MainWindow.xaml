@@ -6,12 +6,13 @@
         xmlns:graphx="http://schemas.panthernet.ru/graphx/"
         xmlns:models="clr-namespace:GraphXSampleWpfApp.Models"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="594.59" Width="1122.186">
 
     <Grid Background="#FFDADADA">
         <graphx:ZoomControl x:Name="ZoomCtrl" Margin="0,0,149.8,-0.4" Background="White">
             <models:GraphAreaExample x:Name="GraphArea1" Margin="0,0,0,0" />
         </graphx:ZoomControl>
+        <Button x:Name="FirstExample" Content="First Example" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="85" Click="FirstExample_Click" />
 
     </Grid>
 </Window>
