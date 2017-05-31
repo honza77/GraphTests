@@ -13,6 +13,7 @@
             <models:GraphAreaExample x:Name="GraphArea1" Margin="0,0,0,0" />
         </graphx:ZoomControl>
         <Button x:Name="FirstExample" Content="First Example" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="85" Click="FirstExample_Click" />
+        <Button x:Name="OtherExample" Content="Other Example" HorizontalAlignment="Right" Margin="0,41,10,0" VerticalAlignment="Top" Width="85" Click="OtherExample_Click"  />
 
     </Grid>
 </Window>

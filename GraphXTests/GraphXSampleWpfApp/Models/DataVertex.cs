@@ -34,6 +34,12 @@ namespace GraphXSampleWpfApp.Models
         {
         }
 
+        public DataVertex(int index )
+        {
+            Text = index.ToString();
+            ID = index;
+        }
+
         public DataVertex(string text = "")
         {
             Text = text;

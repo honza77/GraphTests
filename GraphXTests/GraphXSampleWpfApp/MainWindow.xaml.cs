@@ -16,7 +16,27 @@ namespace GraphXSampleWpfApp
 
         private void FirstExample_Click(object sender, RoutedEventArgs e)
         {
-            var graphBase = GraphSamplesFactory.FirstSimpleExample();
+            var graph = GraphSamples.FirstSimpleExample();
+            //var graph = GraphSamples.Example2();
+
+            var gxLogicCoreExample = new GxLogicCoreExample
+            {
+                Graph = Convertors.ToGraphExample(graph)
+            };
+
+            GraphArea1.LogicCore = gxLogicCoreExample;
+
+            GraphArea1.GenerateGraph();
+
+            ZoomCtrl.ZoomToFill();
+        }
+
+        private void OtherExample_Click(object sender, RoutedEventArgs e)
+        {
+            //var graphBase = GraphSamplesFactory.SimpleExample1();
+            //var graphBase = GraphSamplesFactory.SimpleExample2();
+            //var graphBase = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:50, edgeCount: 100);
+            var graphBase = GraphSamplesFactory.CircleGraph();
 
             var graph = Convertors.Convert(graphBase);
 
@@ -29,7 +49,8 @@ namespace GraphXSampleWpfApp
 
             GraphArea1.GenerateGraph();
 
-            //ZoomCtrl.ZoomToFill();
+            ZoomCtrl.ZoomToFill();
+
         }
     }
 }
