@@ -36,7 +36,9 @@ namespace GraphXSampleWpfApp
             //var graphBase = GraphSamplesFactory.SimpleExample1();
             //var graphBase = GraphSamplesFactory.SimpleExample2();
             //var graphBase = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:50, edgeCount: 100);
-            var graphBase = GraphSamplesFactory.CircleGraph();
+            //var graphBase = GraphSamplesFactory.CircleGraph( vertexCount:15);
+            //var graphBase = GraphSamplesFactory.FullGraph(vertexCount: 15);
+            var graphBase = GraphSamplesFactory.TreeGraph(levels:3, degree: 2);
 
             var graph = Convertors.Convert(graphBase);
 

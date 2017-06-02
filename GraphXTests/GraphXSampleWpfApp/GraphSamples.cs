@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GraphXSampleWpfApp.Models;
-using QuickGraph;
+﻿using GraphXSampleWpfApp.Models;
 
 namespace GraphXSampleWpfApp
 {
@@ -30,7 +24,7 @@ namespace GraphXSampleWpfApp
         {
             var graph = new GraphExample();
 
-            var Vs = new[]
+            var vertices = new[]
             {
                 new DataVertex(1),
                 new DataVertex(2),
@@ -38,15 +32,15 @@ namespace GraphXSampleWpfApp
                 new DataVertex(4),
             };
 
-            graph.AddVertex( Vs[0] );
-            graph.AddVertex( Vs[1] );
-            graph.AddVertex( Vs[2] );
+            graph.AddVertex( vertices[0] );
+            graph.AddVertex( vertices[1] );
+            graph.AddVertex( vertices[2] );
 
-            graph.AddEdge(new DataEdge(Vs[0], Vs[1]) );
-            graph.AddEdge(new DataEdge(Vs[1], Vs[2]) );
-            graph.AddEdge(new DataEdge(Vs[2], Vs[0]) );
+            graph.AddEdge(new DataEdge(vertices[0], vertices[1]) );
+            graph.AddEdge(new DataEdge(vertices[1], vertices[2]) );
+            graph.AddEdge(new DataEdge(vertices[2], vertices[0]) );
 
-            graph.AddVerticesAndEdge(new DataEdge(Vs[2], Vs[3]) );
+            graph.AddVerticesAndEdge(new DataEdge(vertices[2], vertices[3]) );
 
             return graph;
         }
