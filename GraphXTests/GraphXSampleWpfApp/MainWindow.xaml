@@ -6,14 +6,19 @@
         xmlns:graphx="http://schemas.panthernet.ru/graphx/"
         xmlns:models="clr-namespace:GraphXSampleWpfApp.Models"
         mc:Ignorable="d"
-        Title="MainWindow" Height="594.59" Width="1122.186">
+        Title="MainWindow" Height="591.39" Width="1198.186">
 
     <Grid Background="#FFDADADA">
-        <graphx:ZoomControl x:Name="ZoomCtrl" Margin="0,0,149.8,-0.4" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="559*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <graphx:ZoomControl x:Name="ZoomCtrl" Margin="0,0,115.4,-0.2" Background="White">
             <models:GraphAreaExample x:Name="GraphArea1" Margin="0,0,0,0" />
         </graphx:ZoomControl>
-        <Button x:Name="FirstExample" Content="First Example" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="85" Click="FirstExample_Click" />
-        <Button x:Name="OtherExample" Content="Other Example" HorizontalAlignment="Right" Margin="0,41,10,0" VerticalAlignment="Top" Width="85" Click="OtherExample_Click"  />
+        <Button x:Name="FirstExample" Content="First Example" HorizontalAlignment="Right" Margin="0,10,9.8,0" VerticalAlignment="Top" Width="85" Click="FirstExample_Click" RenderTransformOrigin="0.502,0.5" Grid.ColumnSpan="2" Grid.Column="0" />
+        <Button x:Name="OtherExample" Content="Other Example" HorizontalAlignment="Right" Margin="0,41,9.8,0" VerticalAlignment="Top" Width="85" Click="OtherExample_Click" Grid.ColumnSpan="2" Grid.Column="0" />
+        <Button x:Name="Relayout" Content="Relayout" HorizontalAlignment="Right" Margin="0,142,10,0" VerticalAlignment="Top" Width="85"  Click="Relayout_Click" Grid.ColumnSpan="2" Grid.Column="0"   />
 
     </Grid>
 </Window>

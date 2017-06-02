@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using GraphX.Controls.Animations;
+using GraphX.Controls.Models;
+using GraphX.PCL.Common.Enums;
 using GraphXSampleLib;
 using GraphXSampleWpfApp.Models;
 
@@ -12,6 +16,8 @@ namespace GraphXSampleWpfApp
         public MainWindow()
         {
             InitializeComponent();
+
+            LogirCoreSetup();
         }
 
         private void FirstExample_Click(object sender, RoutedEventArgs e)
@@ -21,7 +27,8 @@ namespace GraphXSampleWpfApp
 
             var gxLogicCoreExample = new GxLogicCoreExample
             {
-                Graph = Convertors.ToGraphExample(graph)
+                Graph = graph,
+                //DefaultLayo utAlgorithm = GraphX.PCL.Common.Enums.LayoutAlgorithmTypeEnum.BoundedFR
             };
 
             GraphArea1.LogicCore = gxLogicCoreExample;
@@ -33,26 +40,47 @@ namespace GraphXSampleWpfApp
 
         private void OtherExample_Click(object sender, RoutedEventArgs e)
         {
-            //var graphBase = GraphSamplesFactory.SimpleExample1();
-            //var graphBase = GraphSamplesFactory.SimpleExample2();
-            //var graphBase = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:50, edgeCount: 100);
-            //var graphBase = GraphSamplesFactory.CircleGraph( vertexCount:15);
-            //var graphBase = GraphSamplesFactory.FullGraph(vertexCount: 15);
-            var graphBase = GraphSamplesFactory.TreeGraph(levels:3, degree: 2);
+            //var graph = GraphSamplesFactory.SimpleExample1();
+            //var graph = GraphSamplesFactory.SimpleExample2();
+            var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:25, edgeCount: 30);
+            //var graph = GraphSamplesFactory.CircleGraph( vertexCount:15);
+            //var graph = GraphSamplesFactory.FullGraph(vertexCount: 15);
+            //var graph = GraphSamplesFactory.TreeGraph(levels:3, degree: 2);
 
-            var graph = Convertors.Convert(graphBase);
-
-            var gxLogicCoreExample = new GxLogicCoreExample
-            {
-                Graph = Convertors.ToGraphExample(graph)
-            };
-
-            GraphArea1.LogicCore = gxLogicCoreExample;
+            GraphArea1.LogicCore.Graph = Convertors.Convert(graph); 
 
             GraphArea1.GenerateGraph();
 
             ZoomCtrl.ZoomToFill();
+        }
 
+        private void Relayout_Click(object sender, RoutedEventArgs e)
+        {
+            if (GraphArea1.LogicCore.AsyncAlgorithmCompute)
+            {
+                throw new NotImplementedException();
+            }
+
+            GraphArea1.RelayoutGraph();
+        }
+
+        private void LogirCoreSetup()
+        {
+            var gxLogicCoreExample = new GxLogicCoreExample
+            {
+                DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.BoundedFR,
+                DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.None 
+            };
+
+            //gxLogicCoreExample.Graph = GraphArea1.LogicCore?.Graph;
+
+            GraphArea1.LogicCore = gxLogicCoreExample;
+
+            GraphArea1.MoveAnimation = AnimationFactory.CreateMoveAnimation(MoveAnimation.Move, TimeSpan.FromSeconds(1));
+
+            //GraphArea1.MouseOverAnimation = AnimationFactory.CreateMouseOverAnimation(MouseOverAnimation.Scale, .3);
+
+            GraphArea1.SetVerticesDrag(true, true);
         }
     }
 }

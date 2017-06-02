@@ -17,14 +17,10 @@ namespace GraphXSampleWpfApp.Models
         /// </summary>
         public string Text { get; set; }
 
-        #region Calculated or static props
-
         public override string ToString()
         {
             return Text;
         }
-
-        #endregion
 
         /// <summary>
         /// Default parameterless constructor for this class
@@ -40,7 +36,7 @@ namespace GraphXSampleWpfApp.Models
             ID = index;
         }
 
-        public DataVertex(string text = "")
+        public DataVertex(string text)
         {
             Text = text;
         }
