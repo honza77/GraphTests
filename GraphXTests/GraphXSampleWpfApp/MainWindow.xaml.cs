@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+
 using GraphX.Controls.Animations;
 using GraphX.Controls.Models;
 using GraphX.PCL.Common.Enums;
 using GraphX.PCL.Logic.Algorithms.LayoutAlgorithms;
+
 using GraphXSampleLib;
 using GraphXSampleWpfApp.Models;
 
@@ -85,38 +88,12 @@ namespace GraphXSampleWpfApp
             var vertices = graph.Vertices.ToList();
             var v1 = vertices.First();
             var v2 = vertices.Last();
-
-            var first = true;
-
+            
             var path = GraphAlgorithms.FindShortestPathUndirected(graph: graph, startVertex: v1, endVertex: v2);
-            foreach (var edge in path)
-            {
-                if (first)
-                {
-                    GraphArea1.VertexList[edge.Source].Background = new SolidColorBrush(Colors.Red);
-                    first = false;
-                }
-
-                GraphArea1.VertexList[edge.Target].Background = new SolidColorBrush(Colors.Red);
-                GraphArea1.EdgesList[edge].Foreground = new SolidColorBrush(Colors.Red);
-            }
-
-
+            HighlightPath(path, Colors.DarkOrange);
 
             path = GraphAlgorithms.FindShortestPath(graph: graph, startVertex: v1, endVertex: v2);
-
-            foreach (var edge in path)
-            {
-                if (first)
-                {
-                    GraphArea1.VertexList[edge.Source].Background = new SolidColorBrush(Colors.LimeGreen);
-                    first = false;
-                }
-
-                GraphArea1.VertexList[edge.Target].Background = new SolidColorBrush(Colors.LimeGreen);
-                GraphArea1.EdgesList[edge].Foreground = new SolidColorBrush(Colors.LimeGreen);
-            }
-
+            HighlightPath(path, Colors.LimeGreen);
         }
 
         #endregion
@@ -144,7 +121,6 @@ namespace GraphXSampleWpfApp
 
         private void ChangeLayoutAlgorithm(LayoutAlgorithmTypeEnum layoutChoice)
         {
-
             if (GraphArea1?.LogicCore == null) return;
 
             GraphArea1.LogicCore.DefaultLayoutAlgorithm = layoutChoice;
@@ -171,6 +147,29 @@ namespace GraphXSampleWpfApp
 
             GraphArea1.LogicCore.EdgeCurvingEnabled = layoutChoice != LayoutAlgorithmTypeEnum.EfficientSugiyama;
                 
+        }
+
+        private void HighlightPath(IEnumerable<DataEdge> path, Color color)
+        {
+            var solidColorBrush = new SolidColorBrush(color);
+            //int sleepTime = 250;
+
+            var first = true;
+            
+            foreach (var edge in path)
+            {
+                if (first)
+                {
+                    GraphArea1.VertexList[edge.Source].Background = solidColorBrush;
+                    first = false;
+                }
+
+                //System.Threading.Thread.Sleep(sleepTime);
+                GraphArea1.EdgesList[edge].Foreground = solidColorBrush;
+
+                //System.Threading.Thread.Sleep(sleepTime);
+                GraphArea1.VertexList[edge.Target].Background = solidColorBrush;
+            }
         }
 
         #endregion
