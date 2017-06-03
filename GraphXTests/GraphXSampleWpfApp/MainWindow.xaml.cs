@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using GraphX.Controls.Animations;
 using GraphX.Controls.Models;
 using GraphX.PCL.Common.Enums;
@@ -76,6 +77,46 @@ namespace GraphXSampleWpfApp
             }
 
             GraphArea1.RelayoutGraph();
+        }
+
+        private void ShortestPath_Click(object sender, RoutedEventArgs e)
+        {
+            var graph = GraphArea1.LogicCore.Graph;
+            var vertices = graph.Vertices.ToList();
+            var v1 = vertices.First();
+            var v2 = vertices.Last();
+
+            var first = true;
+
+            var path = GraphAlgorithms.FindShortestPathUndirected(graph: graph, startVertex: v1, endVertex: v2);
+            foreach (var edge in path)
+            {
+                if (first)
+                {
+                    GraphArea1.VertexList[edge.Source].Background = new SolidColorBrush(Colors.Red);
+                    first = false;
+                }
+
+                GraphArea1.VertexList[edge.Target].Background = new SolidColorBrush(Colors.Red);
+                GraphArea1.EdgesList[edge].Foreground = new SolidColorBrush(Colors.Red);
+            }
+
+
+
+            path = GraphAlgorithms.FindShortestPath(graph: graph, startVertex: v1, endVertex: v2);
+
+            foreach (var edge in path)
+            {
+                if (first)
+                {
+                    GraphArea1.VertexList[edge.Source].Background = new SolidColorBrush(Colors.LimeGreen);
+                    first = false;
+                }
+
+                GraphArea1.VertexList[edge.Target].Background = new SolidColorBrush(Colors.LimeGreen);
+                GraphArea1.EdgesList[edge].Foreground = new SolidColorBrush(Colors.LimeGreen);
+            }
+
         }
 
         #endregion

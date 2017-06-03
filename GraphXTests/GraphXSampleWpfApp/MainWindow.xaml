@@ -21,5 +21,6 @@
         <Label x:Name="LayoutLablel" Content="Layout" HorizontalAlignment="Right" Margin="0,89,48.8,0" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.719" Grid.Column="0" />
         <ComboBox x:Name="LayoutSelection" HorizontalAlignment="Right" Margin="0,115,10,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.582,-1.179" Grid.ColumnSpan="2" Grid.Column="0" SelectionChanged="LayoutSelection_SelectionChanged" />
         <Button x:Name="Relayout" Content="Relayout" HorizontalAlignment="Right" Margin="0,142,10,0" VerticalAlignment="Top" Width="85"  Click="Relayout_Click" Grid.ColumnSpan="2" Grid.Column="0"   />
+        <Button x:Name="ShortestPath" Content="Shortest Path" HorizontalAlignment="Right" Margin="0,199,10,0" VerticalAlignment="Top" Width="85" Grid.ColumnSpan="2" Grid.Column="0" Click="ShortestPath_Click"   />
     </Grid>
 </Window>
