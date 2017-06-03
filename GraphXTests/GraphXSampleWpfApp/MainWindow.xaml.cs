@@ -23,11 +23,11 @@ namespace GraphXSampleWpfApp
             LayoutSelection.ItemsSource = Enum.GetValues(typeof(LayoutAlgorithmTypeEnum)).Cast<LayoutAlgorithmTypeEnum>();
             LayoutSelection.SelectedItem = LayoutAlgorithmTypeEnum.KK;
 
-            LogirCoreSetup();
-
-
+            LogicCoreSetup();
         }
 
+        #region menu events
+         
         private void FirstExample_Click(object sender, RoutedEventArgs e)
         {
             var graph = GraphSamples.FirstSimpleExample();
@@ -62,6 +62,12 @@ namespace GraphXSampleWpfApp
             ZoomCtrl.ZoomToFill();
         }
 
+        private void LayoutSelection_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (LayoutSelection.SelectedItem == null) return;
+            ChangeLayoutAlgorithm((LayoutAlgorithmTypeEnum)LayoutSelection.SelectedItem);
+        }
+
         private void Relayout_Click(object sender, RoutedEventArgs e)
         {
             if (GraphArea1.LogicCore.AsyncAlgorithmCompute)
@@ -72,7 +78,11 @@ namespace GraphXSampleWpfApp
             GraphArea1.RelayoutGraph();
         }
 
-        private void LogirCoreSetup()
+        #endregion
+
+        #region GraphArea1 stuff 
+
+        private void LogicCoreSetup()
         {
             var gxLogicCoreExample = new GxLogicCoreExample
             {
@@ -89,12 +99,6 @@ namespace GraphXSampleWpfApp
             //GraphArea1.MouseOverAnimation = AnimationFactory.CreateMouseOverAnimation(MouseOverAnimation.Scale, .3);
 
             GraphArea1.SetVerticesDrag(true, true);
-        }
-
-        private void LayoutSelection_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (LayoutSelection.SelectedItem == null) return;
-            ChangeLayoutAlgorithm((LayoutAlgorithmTypeEnum)LayoutSelection.SelectedItem);
         }
 
         private void ChangeLayoutAlgorithm(LayoutAlgorithmTypeEnum layoutChoice)
@@ -127,5 +131,7 @@ namespace GraphXSampleWpfApp
             GraphArea1.LogicCore.EdgeCurvingEnabled = layoutChoice != LayoutAlgorithmTypeEnum.EfficientSugiyama;
                 
         }
+
+        #endregion
     }
 }
