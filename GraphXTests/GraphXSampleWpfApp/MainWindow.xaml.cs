@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using GraphX.Controls.Animations;
 using GraphX.Controls.Models;
 using GraphX.PCL.Common.Enums;
+using GraphX.PCL.Logic.Algorithms.LayoutAlgorithms;
 using GraphXSampleLib;
 using GraphXSampleWpfApp.Models;
 
@@ -17,7 +20,12 @@ namespace GraphXSampleWpfApp
         {
             InitializeComponent();
 
+            LayoutSelection.ItemsSource = Enum.GetValues(typeof(LayoutAlgorithmTypeEnum)).Cast<LayoutAlgorithmTypeEnum>();
+            LayoutSelection.SelectedItem = LayoutAlgorithmTypeEnum.KK;
+
             LogirCoreSetup();
+
+
         }
 
         private void FirstExample_Click(object sender, RoutedEventArgs e)
@@ -81,6 +89,43 @@ namespace GraphXSampleWpfApp
             //GraphArea1.MouseOverAnimation = AnimationFactory.CreateMouseOverAnimation(MouseOverAnimation.Scale, .3);
 
             GraphArea1.SetVerticesDrag(true, true);
+        }
+
+        private void LayoutSelection_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (LayoutSelection.SelectedItem == null) return;
+            ChangeLayoutAlgorithm((LayoutAlgorithmTypeEnum)LayoutSelection.SelectedItem);
+        }
+
+        private void ChangeLayoutAlgorithm(LayoutAlgorithmTypeEnum layoutChoice)
+        {
+
+            if (GraphArea1?.LogicCore == null) return;
+
+            GraphArea1.LogicCore.DefaultLayoutAlgorithm = layoutChoice;
+
+            switch (layoutChoice)
+            {
+                    case LayoutAlgorithmTypeEnum.EfficientSugiyama:
+                        var prms = GraphArea1.LogicCore.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.EfficientSugiyama) as EfficientSugiyamaLayoutParameters;
+                        Debug.Assert(prms != null);
+
+                        prms.EdgeRouting = SugiyamaEdgeRoutings.Orthogonal;
+                        prms.LayerDistance = prms.VertexDistance = 100;
+                        GraphArea1.LogicCore.EdgeCurvingEnabled = false;
+                        GraphArea1.LogicCore.DefaultLayoutAlgorithmParams = prms;
+                        //gg_eralgo.SelectedItem = EdgeRoutingAlgorithmTypeEnum.None;
+                    break;
+                    case LayoutAlgorithmTypeEnum.BoundedFR:
+                        GraphArea1.LogicCore.DefaultLayoutAlgorithmParams = GraphArea1.LogicCore.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.BoundedFR);
+                    break;
+                    case LayoutAlgorithmTypeEnum.FR:
+                    GraphArea1.LogicCore.DefaultLayoutAlgorithmParams = GraphArea1.LogicCore.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.FR);
+                    break;
+            }
+
+            GraphArea1.LogicCore.EdgeCurvingEnabled = layoutChoice != LayoutAlgorithmTypeEnum.EfficientSugiyama;
+                
         }
     }
 }
