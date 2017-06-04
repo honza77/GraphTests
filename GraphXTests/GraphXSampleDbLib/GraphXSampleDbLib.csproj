@@ -68,6 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbInfo.cs" />
+    <Compile Include="GraphDbInfo.cs" />
     <Compile Include="Model\DbDataEdge.cs" />
     <Compile Include="Model\DbDataGraph.cs" />
     <Compile Include="Model\DbDataVertex.cs" />
