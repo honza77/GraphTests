@@ -19,6 +19,7 @@ namespace GraphXSampleDbLibTests
         public void Init()
         {
             _connString = "Server=localhost;DataBase=zoo;Integrated Security=SSPI";
+            //_connString = "Server=localhost;DataBase=AdventureWorks2014;Integrated Security=SSPI";
         }
 
         [TestMethod]
@@ -35,6 +36,26 @@ namespace GraphXSampleDbLibTests
                 {
                     any = true;
                     TestContext.WriteLine($"{table}");
+                }
+
+                Assert.IsTrue(any);
+            }
+        }
+
+        [TestMethod]
+        public void ListSchemaTableNamesTest()
+        {
+            using (var dbInfo = new DbInfo(_connString))
+            {
+                var tables = dbInfo.ListSchemaTableNames();
+
+                // !!enumerate before dbInfo Dispose (inside using):
+
+                var any = false;
+                foreach (var table in tables)
+                {
+                    any = true;
+                    TestContext.WriteLine($"{table.Item1}.{table.Item2}");
                 }
 
                 Assert.IsTrue(any);
@@ -60,18 +81,19 @@ namespace GraphXSampleDbLibTests
         }
 
         [TestMethod]
-        public void ReadAllFKs()
+        public void ReadAllFks()
         {
             using (var dbInfo = new DbInfo(_connString))
             {
                 var tables = dbInfo.ListTableNames().ToList();
+                //var tables = dbInfo.ListTableNames().ToDictionary();
 
                 var any = false;
                 foreach (var fk in dbInfo.ReadAllFKs())
                 {
                     any = true;
-                    Assert.IsNotNull(tables.FirstOrDefault(t => t == fk.Item1));
-                    Assert.IsNotNull(tables.FirstOrDefault(t => t == fk.Item2));
+                    //Assert.IsNotNull(tables.Any(t => t == fk.Item1));
+                    //Assert.IsNotNull(tables.Any(t => t == fk.Item2));
                     TestContext.WriteLine($"{fk}");
                 }
 
@@ -80,11 +102,11 @@ namespace GraphXSampleDbLibTests
         }
 
         [TestMethod]
-        public void ReadAlltablesFKs()
+        public void ReadAllTablesFks()
         {
             using (var dbInfo = new DbInfo(_connString))
             {
-                foreach (var table in dbInfo.ListTableNames())
+                foreach (var table in dbInfo.ListTableNames().ToList())
                 {
                     TestContext.WriteLine($"{table}");
                     

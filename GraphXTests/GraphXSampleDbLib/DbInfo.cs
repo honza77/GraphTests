@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace GraphXSampleDbLib
 {
@@ -17,34 +18,73 @@ namespace GraphXSampleDbLib
 
         public IEnumerable<string> ListTableNames()
         {
-            DataTable dt = _connection.GetSchema("Tables");
-            foreach (DataRow row in dt.Rows)
+            using (SqlCommand cmd = new SqlCommand("SELECT name, * FROM sysobjects WHERE xtype = 'U'", _connection))
             {
-                yield return (string)row[2];
+                //cmd.CommandType = CommandType.StoredProcedure;
+
+                var rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    yield return rdr["name"].ToString();
+                }
+
+                rdr.Close();
             }
         }
 
+        public IEnumerable<Tuple<string, string>> ListSchemaTableNames()
+        {
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables order by TABLE_SCHEMA, TABLE_NAME", _connection))
+            {
+                //cmd.CommandType = CommandType.StoredProcedure;
+
+                var rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    yield return Tuple.Create(rdr["TABLE_SCHEMA"].ToString(), rdr["TABLE_NAME"].ToString());
+                }
+
+                rdr.Close();
+            }
+        }
+
+
+
         public IEnumerable<Tuple<string, string>> ReadAllFKs()
         {
-            var tables = ListTableNames(); 
+            //var tables = ListTableNames().ToList(); 
+            var tables = ListSchemaTableNames().ToList();
 
             foreach (var table1 in tables)
             {
-                var fks = ReadTableFks(table1);
+                //var fks = ReadTableFks(table1);
+                var fks = ReadTableFks(schema: table1.Item1, tableName: table1.Item2);
 
                 foreach (var table2 in fks)
                 {
-                    yield return Tuple.Create(table1, table2);
+                    yield return Tuple.Create($"{table1.Item1}.{table1.Item2}", table2);
                 }
             }
         }
 
-        public IEnumerable<string> ReadTableFks(string tableName)
+        public IEnumerable<string> ReadTableFks(string tableName )
+        {
+            return ReadTableFks( null, tableName);
+        }
+
+        public IEnumerable<string> ReadTableFks(string schema , string tableName )
         {
             using (SqlCommand cmd = new SqlCommand("sp_fkeys", _connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@pktable_name", tableName));
+
+                if (!string.IsNullOrEmpty(schema))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@pktable_owner", schema));
+                }
 
                 var rdr = cmd.ExecuteReader();
 
