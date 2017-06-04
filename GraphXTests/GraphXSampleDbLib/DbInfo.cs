@@ -30,7 +30,7 @@ namespace GraphXSampleDbLib
 
             foreach (var table1 in tables)
             {
-                var fks = ReadTableFKs(table1);
+                var fks = ReadTableFks(table1);
 
                 foreach (var table2 in fks)
                 {
@@ -39,7 +39,7 @@ namespace GraphXSampleDbLib
             }
         }
 
-        public IEnumerable<string> ReadTableFKs(string tableName)
+        public IEnumerable<string> ReadTableFks(string tableName)
         {
             using (SqlCommand cmd = new SqlCommand("sp_fkeys", _connection))
             {

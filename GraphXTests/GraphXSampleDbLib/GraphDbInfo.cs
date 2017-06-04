@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using GraphXSampleDbLib.Model;
 
 
@@ -23,12 +23,22 @@ namespace GraphXSampleDbLib
 
         private static DbDataGraph GetDbModelGraph(DbInfo dbInfo)
         {
-            // TODO
-            DbDataGraph graph = new DbDataGraph();
+            var dbGraph = new DbDataGraph();
 
-            graph.AddVerticesAndEdge(new DbDataEdge(source: new DbDataVertex("v1"), target: new DbDataVertex("v2") ));
+            // add vertexes (tables)
+            var tableNames = dbInfo.ListTableNames();
+            dbGraph.AddVertexRange(tableNames.Select(s=> new DbDataVertex(s)));
 
-            return graph;
+            // add edges (FKs)
+            var vertices = dbGraph.Vertices.ToDictionary(v => v.ToString(), v => v);
+
+            foreach (var vertice in dbGraph.Vertices)
+            {
+                var tableFKs = dbInfo.ReadTableFks(vertice.TableName);
+                dbGraph.AddEdgeRange(tableFKs.Select(fk => new DbDataEdge(vertice, vertices[fk])));
+            }
+
+            return dbGraph;
         }
 
         #endregion

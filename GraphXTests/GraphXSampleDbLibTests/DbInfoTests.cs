@@ -46,7 +46,7 @@ namespace GraphXSampleDbLibTests
         {
             using (var dbInfo = new DbInfo(_connString))
             {
-                var usersTableFks = dbInfo.ReadTableFKs("Users"); 
+                var usersTableFks = dbInfo.ReadTableFks("Users"); 
 
                 var any = false;
                 foreach (var fk in usersTableFks)
@@ -88,7 +88,7 @@ namespace GraphXSampleDbLibTests
                 {
                     TestContext.WriteLine($"{table}");
                     
-                    foreach (var fk in dbInfo.ReadTableFKs(table))
+                    foreach (var fk in dbInfo.ReadTableFks(table))
                     {
                         TestContext.WriteLine($"\t - {fk}");
                     }
