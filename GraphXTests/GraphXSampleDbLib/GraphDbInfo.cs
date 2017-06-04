@@ -34,8 +34,9 @@ namespace GraphXSampleDbLib
 
             foreach (var vertice in dbGraph.Vertices)
             {
-                var tableFKs = dbInfo.ReadTableFks(vertice.TableName);
-                dbGraph.AddEdgeRange(tableFKs.Select(fk => new DbDataEdge(vertice, vertices[fk])));
+                var tableFkEdgess = dbInfo.ReadTableFks(vertice.TableName)
+                                        .Select(fk => new DbDataEdge(vertice, vertices[fk]));
+                dbGraph.AddEdgeRange(tableFkEdgess);
             }
 
             return dbGraph;
