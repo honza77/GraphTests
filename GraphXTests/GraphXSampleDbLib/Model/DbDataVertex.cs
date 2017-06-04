@@ -2,7 +2,7 @@
 
 namespace GraphXSampleDbLib.Model
 {
-    class DbDataVertex : VertexBase
+    public class DbDataVertex : VertexBase
     {
         /// <summary>
         /// Some string property for example purposes

@@ -132,6 +132,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GraphXSampleDbLib\GraphXSampleDbLib.csproj">
+      <Project>{cba5518c-f8f6-4497-9844-c889d51cf4fa}</Project>
+      <Name>GraphXSampleDbLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GraphXSampleLib\GraphXSampleLib.csproj">
       <Project>{98a9988e-5c8b-417d-ac1d-192079f9b0d8}</Project>
       <Name>GraphXSampleLib</Name>

@@ -79,8 +79,6 @@ namespace GraphXSampleDbLibTests
             }
         }
 
-
-
         [TestMethod]
         public void ReadAlltablesFKs()
         {

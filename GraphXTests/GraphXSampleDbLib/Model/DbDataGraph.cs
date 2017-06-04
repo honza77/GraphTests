@@ -2,5 +2,5 @@
 
 namespace GraphXSampleDbLib.Model
 {
-    class DbDataGraph : BidirectionalGraph<DbDataVertex, DbDataEdge> { }
+    public class DbDataGraph : BidirectionalGraph<DbDataVertex, DbDataEdge> { }
 }

@@ -2,7 +2,7 @@
 
 namespace GraphXSampleDbLib.Model
 {
-    class DbDataEdge : EdgeBase<DbDataVertex>
+    public class DbDataEdge : EdgeBase<DbDataVertex>
     {
         /// <summary>
         /// Default constructor. We need to set at least Source and Target properties of the edge.

@@ -1,21 +1,22 @@
 ﻿using System.Linq;
-using GraphX.PCL.Common;
-using GraphXSampleWpfApp.Models;
 using QuickGraph;
+using GraphX.PCL.Common;
+using GraphXSampleDbLib.Model;
+using GraphXSampleWpfApp.Models;
 
 namespace GraphXSampleWpfApp
 {
     class Convertors
     {
-        public static BidirectionalGraph<DataVertex, DataEdge> Convert(BidirectionalGraph<int, IEdge<int>> oldGraph)
+        public static BidirectionalGraph<DataVertex, DataEdge> Convert(DbDataGraph oldGraph)
         {
-            var dataVertices = oldGraph.Vertices.ToDictionary(i => i, i => new DataVertex(i.ToString()));
-            return oldGraph.Convert(vertexMapperFunc: i => dataVertices[i], edgeMapperFunc: e=>new DataEdge(dataVertices[e.Source], dataVertices[e.Target]));
+            var dataVertices = oldGraph.Vertices.ToDictionary(v => v, v => new DataVertex(v.ToString()));
+            return oldGraph.Convert(vertexMapperFunc: i => dataVertices[i], edgeMapperFunc: e => new DataEdge(dataVertices[e.Source], dataVertices[e.Target]));
         }
 
-        public static BidirectionalGraph<DataVertex, DataEdge> Convert(BidirectionalGraph<string, IEdge<string>> oldGraph)
+        public static BidirectionalGraph<DataVertex, DataEdge> Convert<TVertex>(BidirectionalGraph<TVertex, IEdge<TVertex>> oldGraph)
         {
-            var dataVertices = oldGraph.Vertices.ToDictionary(i => i, i => new DataVertex(i.ToString()));
+            var dataVertices = oldGraph.Vertices.ToDictionary(v => v, v => new DataVertex(v.ToString()));
             return oldGraph.Convert(vertexMapperFunc: i => dataVertices[i], edgeMapperFunc: e => new DataEdge(dataVertices[e.Source], dataVertices[e.Target]));
         }
 

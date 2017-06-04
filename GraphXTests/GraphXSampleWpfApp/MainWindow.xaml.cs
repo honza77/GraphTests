@@ -9,7 +9,7 @@ using GraphX.Controls.Animations;
 using GraphX.Controls.Models;
 using GraphX.PCL.Common.Enums;
 using GraphX.PCL.Logic.Algorithms.LayoutAlgorithms;
-
+using GraphXSampleDbLib;
 using GraphXSampleLib;
 using GraphXSampleWpfApp.Models;
 
@@ -94,6 +94,15 @@ namespace GraphXSampleWpfApp
 
             path = GraphAlgorithms.FindShortestPath(graph: graph, startVertex: v1, endVertex: v2);
             HighlightPath(path, Colors.LimeGreen);
+        }
+
+        private void DbGraph_Click(object sender, RoutedEventArgs e)
+        {
+            var graph = GraphDbInfo.GetZooDbModelGraph();
+
+            GraphArea1.LogicCore.Graph = Convertors.Convert(graph);
+            GraphArea1.GenerateGraph();
+            ZoomCtrl.ZoomToFill();
         }
 
         #endregion
