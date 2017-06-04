@@ -9,11 +9,14 @@ namespace GraphXSampleDbLib.Model
         /// </summary>
         public string TableName { get; set; }
 
+        public string TableOwner { get; set; }
+
         #region Calculated or static props
 
         public override string ToString()
         {
-            return TableName;
+            //return TableName;
+            return $"{TableOwner}.{TableName}";
         }
 
         #endregion
@@ -22,13 +25,18 @@ namespace GraphXSampleDbLib.Model
         /// Default parameterless constructor for this class
         /// (required for YAXLib serialization)
         /// </summary>
-        public DbDataVertex() : this(string.Empty)
+        public DbDataVertex() : this(string.Empty, string.Empty)
         {
         }
 
-        public DbDataVertex(string tableName = "")
+        public DbDataVertex(string tableName) : this(string.Empty, tableName)
+        {
+        }
+
+        public DbDataVertex(string tableOwner, string tableName)
         {
             TableName = tableName;
+            TableOwner = tableOwner;
         }
 
     }

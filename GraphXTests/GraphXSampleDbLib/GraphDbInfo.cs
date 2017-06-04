@@ -10,7 +10,9 @@ namespace GraphXSampleDbLib
 
         public static DbDataGraph GetZooDbModelGraph()
         {
-            return GetDbModelGraph("Server=localhost;DataBase=zoo;Integrated Security=SSPI");
+            //return GetDbModelGraph("Server=localhost;DataBase=zoo;Integrated Security=SSPI");
+            //return GetDbModelGraph("Server=localhost;DataBase=NORTHWND;Integrated Security=SSPI");
+            return GetDbModelGraph("Server=localhost;DataBase=AdventureWorks2014;Integrated Security=SSPI");
         }
 
         public static DbDataGraph GetDbModelGraph(string connString)
@@ -26,16 +28,16 @@ namespace GraphXSampleDbLib
             var dbGraph = new DbDataGraph();
 
             // add vertexes (tables)
-            var tableNames = dbInfo.ListTableNames();
-            dbGraph.AddVertexRange(tableNames.Select(s=> new DbDataVertex(s)));
+            var tables = dbInfo.ListSchemaTableNames();
+            dbGraph.AddVertexRange(tables.Select(t=> new DbDataVertex(tableOwner: t.Item1, tableName: t.Item2)));
 
             // add edges (FKs)
-            var vertices = dbGraph.Vertices.ToDictionary(v => v.ToString(), v => v);
+            var vertices = dbGraph.Vertices.ToDictionary(v => $"({v.TableOwner}, {v.TableName})", v => v);
 
             foreach (var vertice in dbGraph.Vertices)
             {
-                var tableFkEdgess = dbInfo.ReadTableFks(vertice.TableName)
-                                        .Select(fk => new DbDataEdge(vertice, vertices[fk]));
+                var tableFkEdgess = dbInfo.ReadTableFks(vertice.TableOwner, vertice.TableName)
+                                        .Select(fk => new DbDataEdge(vertice, vertices[fk.ToString()]));
                 dbGraph.AddEdgeRange(tableFkEdgess);
             }
 

@@ -20,8 +20,6 @@ namespace GraphXSampleDbLib
         {
             using (SqlCommand cmd = new SqlCommand("SELECT name, * FROM sysobjects WHERE xtype = 'U'", _connection))
             {
-                //cmd.CommandType = CommandType.StoredProcedure;
-
                 var rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
@@ -35,10 +33,9 @@ namespace GraphXSampleDbLib
 
         public IEnumerable<Tuple<string, string>> ListSchemaTableNames()
         {
-            using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables order by TABLE_SCHEMA, TABLE_NAME", _connection))
+            //using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables order by TABLE_SCHEMA, TABLE_NAME", _connection))
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables", _connection))
             {
-                //cmd.CommandType = CommandType.StoredProcedure;
-
                 var rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
@@ -54,7 +51,6 @@ namespace GraphXSampleDbLib
 
         public IEnumerable<Tuple<string, string>> ReadAllFKs()
         {
-            //var tables = ListTableNames().ToList(); 
             var tables = ListSchemaTableNames().ToList();
 
             foreach (var table1 in tables)
@@ -64,17 +60,17 @@ namespace GraphXSampleDbLib
 
                 foreach (var table2 in fks)
                 {
-                    yield return Tuple.Create($"{table1.Item1}.{table1.Item2}", table2);
+                    yield return Tuple.Create($"{table1.Item1}.{table1.Item2}", $"{ table2.Item1}.{ table2.Item2}");
                 }
             }
         }
 
-        public IEnumerable<string> ReadTableFks(string tableName )
+        public IEnumerable<Tuple<string, string>> ReadTableFks(string tableName )
         {
             return ReadTableFks( null, tableName);
         }
 
-        public IEnumerable<string> ReadTableFks(string schema , string tableName )
+        public IEnumerable<Tuple<string, string>> ReadTableFks(string schema , string tableName )
         {
             using (SqlCommand cmd = new SqlCommand("sp_fkeys", _connection))
             {
@@ -90,7 +86,7 @@ namespace GraphXSampleDbLib
 
                 while (rdr.Read())
                 {
-                    yield return rdr["FKTABLE_NAME"].ToString();
+                    yield return Tuple.Create(rdr["FKTABLE_OWNER"].ToString(), rdr["FKTABLE_NAME"].ToString());
                 }
 
                 rdr.Close();

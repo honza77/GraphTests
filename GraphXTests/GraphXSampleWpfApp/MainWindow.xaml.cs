@@ -86,11 +86,14 @@ namespace GraphXSampleWpfApp
         {
             var graph = GraphArea1.LogicCore.Graph;
             var vertices = graph.Vertices.ToList();
+
+            if (!vertices.Any()) return;
+
             var v1 = vertices.First();
             var v2 = vertices.Last();
             
             var path = GraphAlgorithms.FindShortestPathUndirected(graph: graph, startVertex: v1, endVertex: v2);
-            HighlightPath(path, Colors.DarkOrange);
+            HighlightUnorientedPath(path, Colors.DarkOrange);
 
             path = GraphAlgorithms.FindShortestPath(graph: graph, startVertex: v1, endVertex: v2);
             HighlightPath(path, Colors.LimeGreen);
@@ -177,6 +180,18 @@ namespace GraphXSampleWpfApp
                 GraphArea1.EdgesList[edge].Foreground = solidColorBrush;
 
                 //System.Threading.Thread.Sleep(sleepTime);
+                GraphArea1.VertexList[edge.Target].Background = solidColorBrush;
+            }
+        }
+
+        private void HighlightUnorientedPath(IEnumerable<DataEdge> path, Color color)
+        {
+            var solidColorBrush = new SolidColorBrush(color);
+
+            foreach (var edge in path)
+            {
+                GraphArea1.VertexList[edge.Source].Background = solidColorBrush;
+                GraphArea1.EdgesList[edge].Foreground = solidColorBrush;
                 GraphArea1.VertexList[edge.Target].Background = solidColorBrush;
             }
         }
