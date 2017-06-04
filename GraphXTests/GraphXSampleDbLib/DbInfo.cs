@@ -24,6 +24,39 @@ namespace GraphXSampleDbLib
             }
         }
 
+        public IEnumerable<Tuple<string, string>> ReadAllFKs()
+        {
+            var tables = ListTableNames(); 
+
+            foreach (var table1 in tables)
+            {
+                var fks = ReadTableFKs(table1);
+
+                foreach (var table2 in fks)
+                {
+                    yield return Tuple.Create(table1, table2);
+                }
+            }
+        }
+
+        public IEnumerable<string> ReadTableFKs(string tableName)
+        {
+            using (SqlCommand cmd = new SqlCommand("sp_fkeys", _connection))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@pktable_name", tableName));
+
+                var rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    yield return rdr["FKTABLE_NAME"].ToString();
+                }
+
+                rdr.Close();
+            }
+        }
+
         #region IDisposable Support
         private bool _disposedValue; //  = false .. To detect redundant calls
 
