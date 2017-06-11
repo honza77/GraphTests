@@ -2,12 +2,15 @@
 ----------
 SELECT * FROM information_schema.tables
 	where table_name like '%emplo%'
+	order by TABLE_SCHEMA, TABLE_NAME
+
 SELECT name, * FROM sysobjects WHERE xtype = 'U'
 
 
 -- FKs:
 -------
 EXEC sp_fkeys 'TABLE NAME'
+EXEC sp_fkeys @pktable_name = N'TABLE_NAME'  ,@pktable_owner = N'TABLE_SCHEMA';  
 
 -- find pointing tables:
 select t.name as TableWithForeignKey, fk.constraint_column_id as FK_PartNo , c.name as ForeignKeyColumn 

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-
+using GraphX.Controls;
 using GraphX.Controls.Animations;
 using GraphX.Controls.Models;
 using GraphX.PCL.Common.Enums;
@@ -12,6 +12,7 @@ using GraphX.PCL.Logic.Algorithms.LayoutAlgorithms;
 using GraphXSampleDbLib;
 using GraphXSampleLib;
 using GraphXSampleWpfApp.Models;
+
 
 namespace GraphXSampleWpfApp
 {
@@ -27,25 +28,32 @@ namespace GraphXSampleWpfApp
             LayoutSelection.ItemsSource = Enum.GetValues(typeof(LayoutAlgorithmTypeEnum)).Cast<LayoutAlgorithmTypeEnum>();
             LayoutSelection.SelectedItem = LayoutAlgorithmTypeEnum.KK;
 
-            LogicCoreSetup();
+            GraphArea1Setup();
         }
 
         #region menu events
          
         private void FirstExample_Click(object sender, RoutedEventArgs e)
         {
-            var graph = GraphSamples.FirstSimpleExample();
-            //var graph = GraphSamples.Example2();
+            // 1. create graph
+            //var graph = GraphSamples.FirstSimpleExample();
+            var graph = GraphSamples.Example2();
 
+            
+
+            // 2. add graph layout algorithm
             var gxLogicCoreExample = new GxLogicCoreExample
             {
                 Graph = graph,
-                //DefaultLayo utAlgorithm = GraphX.PCL.Common.Enums.LayoutAlgorithmTypeEnum.BoundedFR
+                //DefaultLayoutAlgorithm = GraphX.PCL.Common.Enums.LayoutAlgorithmTypeEnum.BoundedFR
             };
 
             GraphArea1.LogicCore = gxLogicCoreExample;
 
+
+            // 3. display graph
             GraphArea1.GenerateGraph();
+
 
             ZoomCtrl.ZoomToFill();
         }
@@ -54,10 +62,11 @@ namespace GraphXSampleWpfApp
         {
             //var graph = GraphSamplesFactory.SimpleExample1();
             //var graph = GraphSamplesFactory.SimpleExample2();
-            var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:25, edgeCount: 30);
+            //var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:25, edgeCount: 30);
+            var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount: 7, edgeCount: 10);
             //var graph = GraphSamplesFactory.CircleGraph( vertexCount:15);
             //var graph = GraphSamplesFactory.FullGraph(vertexCount: 15);
-            //var graph = GraphSamplesFactory.TreeGraph(levels:3, degree: 2);
+            //var graph = GraphSamplesFactory.TreeGraph(levels:2, degree: 2);
 
             GraphArea1.LogicCore.Graph = Convertors.Convert(graph); 
 
@@ -91,7 +100,10 @@ namespace GraphXSampleWpfApp
 
             var v1 = vertices.First();
             var v2 = vertices.Last();
-            
+
+            GraphArea1.VertexList[v1].Background = new SolidColorBrush(Colors.OrangeRed);
+            GraphArea1.VertexList[v2].Background = new SolidColorBrush(Colors.OrangeRed);
+
             var path = GraphAlgorithms.FindShortestPathUndirected(graph: graph, startVertex: v1, endVertex: v2);
             HighlightUnorientedPath(path, Colors.DarkOrange);
 
@@ -112,7 +124,7 @@ namespace GraphXSampleWpfApp
 
         #region GraphArea1 stuff 
 
-        private void LogicCoreSetup()
+        private void GraphArea1Setup()
         {
             var gxLogicCoreExample = new GxLogicCoreExample
             {
@@ -196,6 +208,40 @@ namespace GraphXSampleWpfApp
             }
         }
 
+        private VertexControl CreateVertexControl(Point position)
+        {
+            var data = new DataVertex("Some Vertex");
+            //var data = new DataVertex(("Vertex " + (Area.VertexList.Count + 1)) 
+            //{ ImageId = ShowcaseHelper.Rand.Next(0, ThemedDataStorage.EditorImages.Count) };
+            var vc = new VertexControl(data);
+            vc.SetPosition(position);
+            GraphArea1.AddVertexAndData(data, vc, true);
+            return vc;
+        }
+
         #endregion
+
+        bool _editMode = false;
+
+        private void ZoomCtrl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            //create vertices and edges only in Edit mode
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                if (_editMode)
+                {
+                    var pos = ZoomCtrl.TranslatePoint(e.GetPosition(ZoomCtrl), GraphArea1);
+                    pos.Offset(-22.5, -22.5);
+                    //CreateVertexControl(pos);
+                    var vc = CreateVertexControl(pos);
+                    //if (_ecFrom != null)
+                    //    CreateEdgeControl(vc);
+                }
+                //else if (_opMode == EditorOperationMode.Select)
+                //{
+                //    ClearSelectMode(true);
+                //}
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@
             <ColumnDefinition Width="559*"/>
             <ColumnDefinition Width="17*"/>
         </Grid.ColumnDefinitions>
-        <graphx:ZoomControl x:Name="ZoomCtrl" Margin="0,0,115.4,-0.2" Background="White">
+        <graphx:ZoomControl x:Name="ZoomCtrl" Margin="0,0,115.4,-0.2" Background="White" MouseDown="ZoomCtrl_MouseDown">
             <models:GraphAreaExample x:Name="GraphArea1" Margin="0,0,0,0" />
         </graphx:ZoomControl>
         <Button x:Name="FirstExample" Content="First Example" HorizontalAlignment="Right" Margin="0,10,9.8,0" VerticalAlignment="Top" Width="85" Click="FirstExample_Click" RenderTransformOrigin="0.502,0.5" Grid.ColumnSpan="2" Grid.Column="0" />

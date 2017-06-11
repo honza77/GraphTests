@@ -8,12 +8,14 @@ namespace GraphXSampleWpfApp
         {
             var graph = new GraphExample();
 
-            DataVertex v1 = new DataVertex(1);
-            DataVertex v2 = new DataVertex(2);
+            // 1. add vertexes
+            var v1 = new DataVertex(1);
+            var v2 = new DataVertex(2);
 
             graph.AddVertex(v1);
             graph.AddVertex(v2);
 
+            // 2. add edges
             var edge1 = new DataEdge(v1, v2);
             graph.AddEdge(edge1);
 
@@ -24,6 +26,7 @@ namespace GraphXSampleWpfApp
         {
             var graph = new GraphExample();
 
+            // 1. add vertexes
             var vertices = new[]
             {
                 new DataVertex(1),
@@ -32,6 +35,7 @@ namespace GraphXSampleWpfApp
                 new DataVertex(4),
             };
 
+            // 2. add edges
             graph.AddVertex( vertices[0] );
             graph.AddVertex( vertices[1] );
             graph.AddVertex( vertices[2] );
