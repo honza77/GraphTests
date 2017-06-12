@@ -8,7 +8,7 @@ namespace GraphXSampleDbLib
     {
         #region full DB graphs
 
-        public static DbDataGraph GetZooDbModelGraph()
+        public static DbDataGraph GetDbModelGraph()
         {
             //return GetDbModelGraph("Server=localhost;DataBase=zoo;Integrated Security=SSPI");
             //return GetDbModelGraph("Server=localhost;DataBase=NORTHWND;Integrated Security=SSPI");
@@ -37,7 +37,7 @@ namespace GraphXSampleDbLib
             foreach (var vertice in dbGraph.Vertices)
             {
                 var tableFkEdgess = dbInfo.ReadTableFks(vertice.TableOwner, vertice.TableName)
-                                        .Select(fk => new DbDataEdge(vertice, vertices[fk.ToString()]));
+                                        .Select(fk => new DbDataEdge(vertices[fk.ToString()], vertice));
                 dbGraph.AddEdgeRange(tableFkEdgess);
             }
 

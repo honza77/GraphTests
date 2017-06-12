@@ -36,10 +36,8 @@ namespace GraphXSampleWpfApp
         private void FirstExample_Click(object sender, RoutedEventArgs e)
         {
             // 1. create graph
-            //var graph = GraphSamples.FirstSimpleExample();
-            var graph = GraphSamples.Example2();
-
-            
+            var graph = GraphSamples.FirstSimpleExample();
+            //var graph = GraphSamples.Example2();
 
             // 2. add graph layout algorithm
             var gxLogicCoreExample = new GxLogicCoreExample
@@ -49,7 +47,6 @@ namespace GraphXSampleWpfApp
             };
 
             GraphArea1.LogicCore = gxLogicCoreExample;
-
 
             // 3. display graph
             GraphArea1.GenerateGraph();
@@ -62,11 +59,11 @@ namespace GraphXSampleWpfApp
         {
             //var graph = GraphSamplesFactory.SimpleExample1();
             //var graph = GraphSamplesFactory.SimpleExample2();
-            //var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:25, edgeCount: 30);
-            var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount: 7, edgeCount: 10);
+            //var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount:10, edgeCount: 20);
+            var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount: 20, edgeCount: 40);
             //var graph = GraphSamplesFactory.CircleGraph( vertexCount:15);
             //var graph = GraphSamplesFactory.FullGraph(vertexCount: 15);
-            //var graph = GraphSamplesFactory.TreeGraph(levels:2, degree: 2);
+            //var graph = GraphSamplesFactory.TreeGraph(levels:3, degree: 3);
 
             GraphArea1.LogicCore.Graph = Convertors.Convert(graph); 
 
@@ -113,7 +110,7 @@ namespace GraphXSampleWpfApp
 
         private void DbGraph_Click(object sender, RoutedEventArgs e)
         {
-            var graph = GraphDbInfo.GetZooDbModelGraph();
+            var graph = GraphDbInfo.GetDbModelGraph();
 
             GraphArea1.LogicCore.Graph = Convertors.Convert(graph);
             GraphArea1.GenerateGraph();

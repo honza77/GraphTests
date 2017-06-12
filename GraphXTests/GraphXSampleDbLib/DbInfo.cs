@@ -34,7 +34,7 @@ namespace GraphXSampleDbLib
         public IEnumerable<Tuple<string, string>> ListSchemaTableNames()
         {
             //using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables order by TABLE_SCHEMA, TABLE_NAME", _connection))
-            using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables", _connection))
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables WHERE TABLE_TYPE = 'BASE TABLE'", _connection))
             {
                 var rdr = cmd.ExecuteReader();
 
