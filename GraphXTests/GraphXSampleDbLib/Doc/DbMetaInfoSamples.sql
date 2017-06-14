@@ -6,6 +6,7 @@ select name, * FROM sysobjects where xtype = 'U'
 select * from information_schema.tables
 	where TABLE_TYPE = 'BASE TABLE'
 	--where table_name like '%emplo%'
+	 and TABLE_NAME != 'sysdiagrams'
 	order by TABLE_SCHEMA, TABLE_NAME
 
 

@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbInfoSimple.cs" />
     <Compile Include="DbInfo.cs" />
     <Compile Include="GraphDbInfo.cs" />
     <Compile Include="Model\DbDataEdge.cs" />

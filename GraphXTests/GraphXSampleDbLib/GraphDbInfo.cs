@@ -17,7 +17,8 @@ namespace GraphXSampleDbLib
 
         public static DbDataGraph GetDbModelGraph(string connString)
         {
-            using (var dbInfo = new DbInfo(connString))
+            //using (var dbInfo = new DbInfo(connString))
+            using (var dbInfo = new DbInfoSimple(connString))
             {
                 return GetDbModelGraph(dbInfo);
             }
@@ -37,6 +38,27 @@ namespace GraphXSampleDbLib
             foreach (var vertice in dbGraph.Vertices)
             {
                 var tableFkEdgess = dbInfo.ReadTableFks(vertice.TableOwner, vertice.TableName)
+                                        .Select(fk => new DbDataEdge(vertices[fk.ToString()], vertice));
+                dbGraph.AddEdgeRange(tableFkEdgess);
+            }
+
+            return dbGraph;
+        }
+
+        private static DbDataGraph GetDbModelGraph(DbInfoSimple dbInfo)
+        {
+            var dbGraph = new DbDataGraph();
+
+            // add vertexes (tables)
+            var tables = dbInfo.ListTableNames();
+            dbGraph.AddVertexRange(tables.Select(t => new DbDataVertex(tableName: t)));
+
+            // add edges (FKs)
+            var vertices = dbGraph.Vertices.ToDictionary(v => v.TableName, v => v);
+
+            foreach (var vertice in dbGraph.Vertices)
+            {
+                var tableFkEdgess = dbInfo.ReadTableFks(vertice.TableName)
                                         .Select(fk => new DbDataEdge(vertices[fk.ToString()], vertice));
                 dbGraph.AddEdgeRange(tableFkEdgess);
             }

@@ -63,7 +63,7 @@ namespace GraphXSampleWpfApp
             var graph = GraphSamplesFactory.QuickGraphRandomGraph(vertexCount: 20, edgeCount: 40);
             //var graph = GraphSamplesFactory.CircleGraph( vertexCount:15);
             //var graph = GraphSamplesFactory.FullGraph(vertexCount: 15);
-            //var graph = GraphSamplesFactory.TreeGraph(levels:3, degree: 3);
+            //var graph = GraphSamplesFactory.TreeGraph(levels:2, degree: 3);
 
             GraphArea1.LogicCore.Graph = Convertors.Convert(graph); 
 
@@ -126,7 +126,8 @@ namespace GraphXSampleWpfApp
             var gxLogicCoreExample = new GxLogicCoreExample
             {
                 DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.BoundedFR,
-                DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.None 
+                DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.None //.PathFinder, //.None 
+                //DefaultOverlapRemovalAlgorithm = OverlapRemovalAlgorithmTypeEnum.FSA
             };
 
             //gxLogicCoreExample.Graph = GraphArea1.LogicCore?.Graph;
@@ -207,13 +208,13 @@ namespace GraphXSampleWpfApp
 
         private VertexControl CreateVertexControl(Point position)
         {
-            var data = new DataVertex("Some Vertex");
+            var dataVertex = new DataVertex("Some Vertex");
             //var data = new DataVertex(("Vertex " + (Area.VertexList.Count + 1)) 
             //{ ImageId = ShowcaseHelper.Rand.Next(0, ThemedDataStorage.EditorImages.Count) };
-            var vc = new VertexControl(data);
-            vc.SetPosition(position);
-            GraphArea1.AddVertexAndData(data, vc, true);
-            return vc;
+            var vertexControl = new VertexControl(dataVertex);
+            vertexControl.SetPosition(position);
+            GraphArea1.AddVertexAndData(dataVertex, vertexControl, true);
+            return vertexControl;
         }
 
         #endregion

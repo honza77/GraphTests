@@ -14,23 +14,19 @@ namespace GraphXSampleLib
                                             TVertex endVertex)
                                         where TEdge : class, IEdge<TVertex>
         {
-            Func<TEdge, double> edgeCost = e => 1; // constant cost
+            Func<TEdge, double> edgeCost = e => 1;
 
-            // algorithm build arround 'command pattern': 
+            // extension build arround algorithm 'command pattern': 
             var tryGetPaths = graph.ShortestPathsDijkstra(edgeWeights: edgeCost, source: startVertex);
 
-            // act:
+            // query path for given vertices
             IEnumerable<TEdge> edgePath;
             if (!tryGetPaths(endVertex, out edgePath))
             {
-                yield break;
+                return Enumerable.Empty<TEdge>();
             }
 
-            // return path:
-            foreach (var edge in edgePath)
-            {
-                yield return edge;
-            }
+            return edgePath;
         }
 
         public static IEnumerable<TEdge> FindShortestPath<TVertex, TEdge>(
@@ -41,27 +37,15 @@ namespace GraphXSampleLib
         {
             Func<TEdge, double> edgeCost = e => 1; // constant cost
 
-            if (!(graph.Vertices.Any(v => v.Equals(startVertex))
-                  && graph.Vertices.Any(v => v.Equals(endVertex))))
-            {
-                yield break;
-            }
-
             var tryGetPaths = graph.ShortestPathsDijkstra(edgeWeights: edgeCost, source: startVertex);
 
-
-            // query path for given vertices
             IEnumerable<TEdge> edgePath;
             if (!tryGetPaths(endVertex, out edgePath))
             {
-                yield break;
+                return Enumerable.Empty<TEdge>();
             }
 
-            foreach (var edge in edgePath)
-            {
-                yield return edge;
-
-            }
+            return edgePath;
         }
 
         public static IEnumerable<TEdge> FindShortestPathUndirected<TVertex, TEdge>(

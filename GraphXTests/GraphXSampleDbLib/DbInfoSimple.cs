@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace GraphXSampleDbLib
 {
-    class DbInfo : IDisposable
+    class DbInfoSimple : IDisposable
     {
         private readonly SqlConnection _connection;
 
-        public DbInfo(string connString)
+        public DbInfoSimple(string connString)
         {
             _connection = new SqlConnection(connString);
             _connection.Open();
@@ -18,75 +18,49 @@ namespace GraphXSampleDbLib
 
         public IEnumerable<string> ListTableNames()
         {
-            using (SqlCommand cmd = new SqlCommand("SELECT name, * FROM sysobjects WHERE xtype = 'U'", _connection))
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM information_schema.tables WHERE TABLE_TYPE = 'BASE TABLE' and TABLE_NAME != 'sysdiagrams'", _connection))
             {
                 var rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
-                    yield return rdr["name"].ToString();
+                    yield return rdr["TABLE_NAME"].ToString();
                 }
 
                 rdr.Close();
             }
         }
-
-        public IEnumerable<Tuple<string, string>> ListSchemaTableNames()
-        {
-            //using (SqlCommand cmd = new SqlCommand("SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables order by TABLE_SCHEMA, TABLE_NAME", _connection))
-            using (SqlCommand cmd = new SqlCommand("SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables WHERE TABLE_TYPE = 'BASE TABLE' and TABLE_NAME != 'sysdiagrams'", _connection))
-            {
-                var rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
-                {
-                    yield return Tuple.Create(rdr["TABLE_SCHEMA"].ToString(), rdr["TABLE_NAME"].ToString());
-                }
-
-                rdr.Close();
-            }
-        }
-
-
 
         public IEnumerable<Tuple<string, string>> ReadAllFKs()
         {
-            var tables = ListSchemaTableNames().ToList();
+            var tables = ListTableNames().ToList();
 
             foreach (var table1 in tables)
             {
                 //var fks = ReadTableFks(table1);
-                var fks = ReadTableFks(schema: table1.Item1, tableName: table1.Item2);
+                var fks = ReadTableFks(tableName: table1);
 
                 foreach (var table2 in fks)
                 {
-                    yield return Tuple.Create($"{table1.Item1}.{table1.Item2}", $"{ table2.Item1}.{ table2.Item2}");
+                    yield return Tuple.Create(table1, table2);
                 }
             }
         }
 
-        public IEnumerable<Tuple<string, string>> ReadTableFks(string tableName )
-        {
-            return ReadTableFks( null, tableName);
-        }
 
-        public IEnumerable<Tuple<string, string>> ReadTableFks(string schema , string tableName )
+
+        public IEnumerable<string> ReadTableFks( string tableName )
         {
             using (SqlCommand cmd = new SqlCommand("sp_fkeys", _connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@pktable_name", tableName));
 
-                if (!string.IsNullOrEmpty(schema))
-                {
-                    cmd.Parameters.Add(new SqlParameter("@pktable_owner", schema));
-                }
-
                 var rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
-                    yield return Tuple.Create(rdr["FKTABLE_OWNER"].ToString(), rdr["FKTABLE_NAME"].ToString());
+                    yield return rdr["FKTABLE_NAME"].ToString();
                 }
 
                 rdr.Close();

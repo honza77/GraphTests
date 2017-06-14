@@ -15,7 +15,9 @@ namespace GraphXSampleDbLib.Model
 
         public override string ToString()
         {
-            //return TableName;
+            if (string.IsNullOrEmpty(TableOwner))
+                return TableName;
+
             return $"{TableOwner}.{TableName}";
         }
 
