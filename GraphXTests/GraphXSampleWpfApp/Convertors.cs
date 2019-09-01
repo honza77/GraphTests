@@ -14,10 +14,22 @@ namespace GraphXSampleWpfApp
             return oldGraph.Convert(vertexMapperFunc: i => dataVertices[i], edgeMapperFunc: e => new DataEdge(dataVertices[e.Source], dataVertices[e.Target]));
         }
 
-        public static BidirectionalGraph<DataVertex, DataEdge> Convert<TVertex>(BidirectionalGraph<TVertex, IEdge<TVertex>> oldGraph)
+        //public static BidirectionalGraph<DataVertex, DataEdge> Convert<TVertex>(BidirectionalGraph<TVertex, IEdge<TVertex>> oldGraph)
+        //{
+        //    var dataVertices = oldGraph.Vertices.ToDictionary(v => v, v => new DataVertex(v.ToString()));
+        //    return oldGraph.Convert(vertexMapperFunc: v => dataVertices[v], edgeMapperFunc: e => new DataEdge(dataVertices[e.Source], dataVertices[e.Target]));
+        //}
+
+        public static BidirectionalGraph<DataVertex, DataEdge> Convert<TVertex, TEdge>(IBidirectionalGraph<TVertex, TEdge> oldGraph)
+            where TEdge : IEdge<TVertex>
         {
             var dataVertices = oldGraph.Vertices.ToDictionary(v => v, v => new DataVertex(v.ToString()));
-            return oldGraph.Convert(vertexMapperFunc: v => dataVertices[v], edgeMapperFunc: e => new DataEdge(dataVertices[e.Source], dataVertices[e.Target]));
+
+            return oldGraph.Convert(
+                vertexMapperFunc: v => dataVertices[v],
+                edgeMapperFunc: e => new DataEdge(
+                                            source: dataVertices[e.Source],
+                                            target: dataVertices[e.Target]));
         }
 
         public static GraphExample ToGraphExample(BidirectionalGraph<DataVertex, DataEdge> oldGraph)

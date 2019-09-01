@@ -17,8 +17,8 @@ namespace GraphXSampleDbLib
 
         public static DbDataGraph GetDbModelGraph(string connString)
         {
-            //using (var dbInfo = new DbInfo(connString))
-            using (var dbInfo = new DbInfoSimple(connString))
+            using (var dbInfo = new DbInfo(connString))
+            //using (var dbInfo = new DbInfoSimple(connString))
             {
                 return GetDbModelGraph(dbInfo);
             }

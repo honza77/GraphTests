@@ -36,8 +36,8 @@ namespace GraphXSampleWpfApp
         private void FirstExample_Click(object sender, RoutedEventArgs e)
         {
             // 1. create graph
-            var graph = GraphSamples.FirstSimpleExample();
-            //var graph = GraphSamples.Example2();
+            //var graph = GraphSamples.FirstSimpleExample();
+            var graph = GraphSamples.Example2();
 
             // 2. add graph layout algorithm
             var gxLogicCoreExample = new GxLogicCoreExample
@@ -99,13 +99,23 @@ namespace GraphXSampleWpfApp
             var v2 = vertices.Last();
 
             GraphArea1.VertexList[v1].Background = new SolidColorBrush(Colors.OrangeRed);
-            GraphArea1.VertexList[v2].Background = new SolidColorBrush(Colors.OrangeRed);
+            GraphArea1.VertexList[v2].Background = new SolidColorBrush(Colors.Blue);
 
             var path = GraphAlgorithms.FindShortestPathUndirected(graph: graph, startVertex: v1, endVertex: v2);
-            HighlightUnorientedPath(path, Colors.DarkOrange);
+            HighlightUnOrientedPath(path, Colors.DarkOrange);
 
             path = GraphAlgorithms.FindShortestPath(graph: graph, startVertex: v1, endVertex: v2);
             HighlightPath(path, Colors.LimeGreen);
+
+            GraphArea1.VertexList[v1].Background = new SolidColorBrush(Colors.OrangeRed);
+            GraphArea1.VertexList[v2].Background = new SolidColorBrush(Colors.Blue);
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            var graph = GraphArea1.LogicCore.Graph;
+            var path = GraphAlgorithms.BfSearch(graph: graph).Take(10);
+            HighlightVertices(vertices: path, color: Colors.DarkOrange);
         }
 
         private void DbGraph_Click(object sender, RoutedEventArgs e)
@@ -171,6 +181,17 @@ namespace GraphXSampleWpfApp
                 
         }
 
+
+        private void HighlightVertices(IEnumerable<DataVertex> vertices, Color color)
+        {
+            var solidColorBrush = new SolidColorBrush(color);
+
+            foreach (var vertex in vertices)
+            {
+                GraphArea1.VertexList[vertex].Background = solidColorBrush;
+            }
+        }
+
         private void HighlightPath(IEnumerable<DataEdge> path, Color color)
         {
             var solidColorBrush = new SolidColorBrush(color);
@@ -194,7 +215,7 @@ namespace GraphXSampleWpfApp
             }
         }
 
-        private void HighlightUnorientedPath(IEnumerable<DataEdge> path, Color color)
+        private void HighlightUnOrientedPath(IEnumerable<DataEdge> path, Color color)
         {
             var solidColorBrush = new SolidColorBrush(color);
 
@@ -224,22 +245,21 @@ namespace GraphXSampleWpfApp
         private void ZoomCtrl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             //create vertices and edges only in Edit mode
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
-                if (_editMode)
-                {
-                    var pos = ZoomCtrl.TranslatePoint(e.GetPosition(ZoomCtrl), GraphArea1);
-                    pos.Offset(-22.5, -22.5);
-                    //CreateVertexControl(pos);
-                    var vc = CreateVertexControl(pos);
-                    //if (_ecFrom != null)
-                    //    CreateEdgeControl(vc);
-                }
-                //else if (_opMode == EditorOperationMode.Select)
-                //{
-                //    ClearSelectMode(true);
-                //}
-            }
+            if (e.LeftButton != System.Windows.Input.MouseButtonState.Pressed) return;
+            if (!_editMode) return;
+
+            var pos = ZoomCtrl.TranslatePoint(e.GetPosition(ZoomCtrl), GraphArea1);
+            pos.Offset(-22.5, -22.5);
+            //CreateVertexControl(pos);
+            var vc = CreateVertexControl(pos);
+            //if (_ecFrom != null)
+            //    CreateEdgeControl(vc);
+            //else if (_opMode == EditorOperationMode.Select)
+            //{
+            //    ClearSelectMode(true);
+            //}
         }
+
+
     }
 }

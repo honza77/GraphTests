@@ -12,6 +12,8 @@ namespace GraphXSampleWpfApp
             var v1 = new DataVertex(1);
             var v2 = new DataVertex(2);
 
+            
+
             graph.AddVertex(v1);
             graph.AddVertex(v2);
 
