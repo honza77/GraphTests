@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphXSampleWpfApp", "GraphXSampleWpfApp\GraphXSampleWpfApp.csproj", "{BBCBD092-A8C1-4151-98EE-7CF83D74C673}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{CDDCB2C9-A294-4579-B436-750D632E4443}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphXSampleDbLibTests", "GraphXSampleDbLibTests\GraphXSampleDbLibTests.csproj", "{8AF03E10-DEDF-4605-A2AD-5F8C890B3788}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "SimpleGraph.DotNetCore.WinForms.Fs", "SimpleGraph.DotNetCore.Fs\SimpleGraph.DotNetCore.WinForms.Fs.fsproj", "{870DD6FB-5C98-471B-9282-9F7A6AE23C4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,11 +37,18 @@ Global
 		{8AF03E10-DEDF-4605-A2AD-5F8C890B3788}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AF03E10-DEDF-4605-A2AD-5F8C890B3788}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AF03E10-DEDF-4605-A2AD-5F8C890B3788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{870DD6FB-5C98-471B-9282-9F7A6AE23C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{870DD6FB-5C98-471B-9282-9F7A6AE23C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{870DD6FB-5C98-471B-9282-9F7A6AE23C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{870DD6FB-5C98-471B-9282-9F7A6AE23C4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8AF03E10-DEDF-4605-A2AD-5F8C890B3788} = {CDDCB2C9-A294-4579-B436-750D632E4443}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA1E31AB-61B4-455F-A64D-013CBEE9122D}
 	EndGlobalSection
 EndGlobal

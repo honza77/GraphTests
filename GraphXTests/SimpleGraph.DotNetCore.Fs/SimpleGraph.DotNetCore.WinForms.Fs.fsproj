@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Graph.fs" />
+    <Compile Include="Setup.fs" />
+    <Compile Include="Form1.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <!--<PackageReference Include="QuikGraph" Version="2.2.0" />-->
+    <PackageReference Include="QuickGraphCore" Version="1.0.0" />
+    <PackageReference Include="GraphX" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+<!--  
+    <ProjectReference Include="..\..\GraphX.Core.Controls\GraphX.Core.Controls.csproj" />
+    <ProjectReference Include="..\..\GraphX.Standard.Common\GraphX.Standard.Common.csproj" />
+    <ProjectReference Include="..\..\GraphX.Standard.Logic\GraphX.Standard.Logic.csproj" />
+-->     
+  </ItemGroup>
+
+</Project>
