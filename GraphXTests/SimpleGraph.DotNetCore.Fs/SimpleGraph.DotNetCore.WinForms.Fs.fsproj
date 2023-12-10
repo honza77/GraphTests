@@ -10,6 +10,7 @@
   <ItemGroup>
     <Compile Include="Graph.fs" />
     <Compile Include="Setup.fs" />
+    <Compile Include="WinControls.fs" />
     <Compile Include="Form1.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

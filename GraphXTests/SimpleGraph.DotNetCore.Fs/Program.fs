@@ -21,7 +21,9 @@ let test1Run() =
     Application.SetCompatibleTextRenderingDefault(false);    
     let win = 
         //new Form () 
-        new MyForms.Form1()
+        //new MyForms.Form1()
+        MyForms.Form1.init()
+
     win.ClientSize <- System.Drawing.Size (500, 500)
     Application.Run win // start the event-loop
 

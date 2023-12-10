@@ -16,48 +16,7 @@ open GraphX.Controls.Models;
 open QuickGraph
 
 module Helpers =
-    open Graph
 
-    //let generateWpfVisuals (_zoomctrl: ZoomControl byref) (_gArea: Graph.GraphAreaExample byref) : UIElement =
-    let generateWpfVisuals () : ZoomControl * Graph.GraphAreaExample =
-        
-        
-        let _zoomctrl = new ZoomControl();
-        do ZoomControl.SetViewFinderVisibility(_zoomctrl, Visibility.Visible);
-        let logic = new GXLogicCore<DataVertex, DataEdge, BidirectionalGraph<DataVertex, DataEdge>>();
-        let _gArea =
-                    let ga = new Graph.GraphAreaExample()
-                    
-                        // EnableWinFormsHostingMode = false,
-                    ga.LogicCore <- logic
-                    //ga.EdgeLabelFactory <- // TODO
-                    //            let xx = (new DefaultEdgelabelFactory() :> ILabelFactory<UIElement>)
-                    //            xx
-                    ga
-        _gArea.ShowAllEdgesLabels(true);
-        logic.Graph <- 
-                        //Graph.simpleExample1()  //Helpers.GenerateGraph();
-                        Graph.graphExample1()
-        logic.DefaultLayoutAlgorithm                <- LayoutAlgorithmTypeEnum.LinLog;
-        logic.DefaultLayoutAlgorithmParams          <- logic.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.LinLog);
-        //((LinLogLayoutParameters)logic.DefaultLayoutAlgorithmParams). = 100;
-        logic.DefaultOverlapRemovalAlgorithm        <- OverlapRemovalAlgorithmTypeEnum.FSA;
-        logic.DefaultOverlapRemovalAlgorithmParams  <- logic.AlgorithmFactory.CreateOverlapRemovalParameters(OverlapRemovalAlgorithmTypeEnum.FSA);
-        //((OverlapRemovalParameters)
-        logic.DefaultOverlapRemovalAlgorithmParams.HorizontalGap    <- 50f
-        //((OverlapRemovalParameters)
-        logic.DefaultOverlapRemovalAlgorithmParams.VerticalGap      <- 50f
-        logic.DefaultEdgeRoutingAlgorithm       <- EdgeRoutingAlgorithmTypeEnum.None
-        logic.AsyncAlgorithmCompute             <- false
-        
-        _zoomctrl.Content <- _gArea;
-        //_gArea.RelayoutFinished += gArea_RelayoutFinished;
-
-
-        //let myResourceDictionary = new ResourceDictionary { Source = new Uri("Templates\\template.xaml", UriKind.Relative) };
-        //_zoomctrl.Resources.MergedDictionaries.Add(myResourceDictionary);
-
-        _zoomctrl, _gArea
 
     let prepareWpfHost() =
             let wpfHost = new System.Windows.Forms.Integration.ElementHost()
@@ -90,29 +49,20 @@ module Helpers =
 type Form1() as this =
     inherit Form()
 
+    do this.DoubleBuffered <- true  // is this usefull ?
 
-    let wpfHost = Helpers.prepareWpfHost()
 
-    do this.DoubleBuffered <- true
-
-    let mutable _zoomctrl : ZoomControl = null
-    let mutable _gArea : Graph.GraphAreaExample = new Graph.GraphAreaExample();
     
+module Form1 =
 
+    let initComponents (frm:Form) (wpfHost)=
+        do frm.SuspendLayout()
+        do frm.Controls.Add(wpfHost)
+        Helpers.initComponents frm
+        frm.ResumeLayout(false)
 
-    let initComponents () =
-        do this.SuspendLayout()
-        do this.Controls.Add(wpfHost)
-
-        Helpers.initComponents this
-
-        this.ResumeLayout(false);
-
-
-
-    //let form1_Load((sender, e)) =
-    let form1_Load(xx) =
-        let _zoomctrl , _gArea = Helpers.generateWpfVisuals  ()
+    let form1_Load(wpfHost:Integration.ElementHost) =
+        let _zoomctrl , _gArea = WinControls.generateWpfVisuals  ()
         wpfHost.Child <- _zoomctrl
 
         _gArea.RelayoutFinished.Add(fun x -> _zoomctrl.ZoomToFill()) // gArea_RelayoutFinished
@@ -122,10 +72,22 @@ type Form1() as this =
         _zoomctrl.ZoomToFill();
         ()
 
-    do initComponents () 
-    do this.Load.Add(form1_Load)
 
-    
+    let init () =
+
+        let frm = new Form1()
+
+        let wpfHost = Helpers.prepareWpfHost()
+        
+
+        //let mutable _zoomctrl : ZoomControl = null
+        let  _gArea : Graph.GraphAreaExample = new Graph.GraphAreaExample();
+
+        do initComponents frm wpfHost 
+        do frm.Load.Add(fun _ -> form1_Load wpfHost)
+
+
+        frm
     
 
 
