@@ -18,11 +18,14 @@ open QuickGraph
 module Helpers =
     open Graph
 
-    let generateWpfVisuals (_zoomctrl: ZoomControl byref) (_gArea: Graph.GraphAreaExample byref) : UIElement =
-        _zoomctrl <- new ZoomControl();
+    //let generateWpfVisuals (_zoomctrl: ZoomControl byref) (_gArea: Graph.GraphAreaExample byref) : UIElement =
+    let generateWpfVisuals () : ZoomControl * Graph.GraphAreaExample =
+        
+        
+        let _zoomctrl = new ZoomControl();
         do ZoomControl.SetViewFinderVisibility(_zoomctrl, Visibility.Visible);
         let logic = new GXLogicCore<DataVertex, DataEdge, BidirectionalGraph<DataVertex, DataEdge>>();
-        _gArea <-
+        let _gArea =
                     let ga = new Graph.GraphAreaExample()
                     
                         // EnableWinFormsHostingMode = false,
@@ -54,7 +57,7 @@ module Helpers =
         //let myResourceDictionary = new ResourceDictionary { Source = new Uri("Templates\\template.xaml", UriKind.Relative) };
         //_zoomctrl.Resources.MergedDictionaries.Add(myResourceDictionary);
 
-        _zoomctrl;
+        _zoomctrl, _gArea
 
     let prepareWpfHost() =
             let wpfHost = new System.Windows.Forms.Integration.ElementHost()
@@ -74,6 +77,15 @@ module Helpers =
 
             wpfHost
 
+    let initComponents (this:Form) =
+        //let ctrl = this :> Control
+        //ctrl.DoubleBuffered     <- true
+        this.Name               <- "Form1";
+        this.StartPosition      <- System.Windows.Forms.FormStartPosition.CenterScreen;
+        this.Text               <- "GraphX WF Interop Sample Project v1.0";
+
+
+
 
 type Form1() as this =
     inherit Form()
@@ -90,23 +102,18 @@ type Form1() as this =
 
     let initComponents () =
         do this.SuspendLayout()
-
         do this.Controls.Add(wpfHost)
 
-        //let ctrl = this :> Control
-        //ctrl.DoubleBuffered     <- true
-        this.Name               <- "Form1";
-        this.StartPosition      <- System.Windows.Forms.FormStartPosition.CenterScreen;
-        this.Text               <- "GraphX WF Interop Sample Project v1.0";
+        Helpers.initComponents this
+
         this.ResumeLayout(false);
-        ()
 
 
 
     //let form1_Load((sender, e)) =
     let form1_Load(xx) =
-        let xxx = Helpers.generateWpfVisuals  &_zoomctrl &_gArea 
-        wpfHost.Child <- xxx;
+        let _zoomctrl , _gArea = Helpers.generateWpfVisuals  ()
+        wpfHost.Child <- _zoomctrl
 
         _gArea.RelayoutFinished.Add(fun x -> _zoomctrl.ZoomToFill()) // gArea_RelayoutFinished
         _zoomctrl.ZoomToFill()
