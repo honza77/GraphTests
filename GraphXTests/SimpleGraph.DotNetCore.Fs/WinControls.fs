@@ -42,10 +42,11 @@ let generateWpfVisuals () : ZoomControl * Graph.GraphAreaExample =
                     
                     // EnableWinFormsHostingMode = false,
                 ga.LogicCore <- logic
-                //ga.EdgeLabelFactory <- // TODO
-                //            let xx = (new DefaultEdgelabelFactory() :> ILabelFactory<UIElement>)
-                //            xx
-                ga.ShowAllEdgesLabels(true);
+                ga.EdgeLabelFactory <- null // TODO
+                            //let xx = (new DefaultEdgelabelFactory() :> ILabelFactory<UIElement>)
+                            //xx
+                ga.ShowAllEdgesLabels(false);
+                //ga.AddEdge
                 ga
        
 
